@@ -8,6 +8,8 @@ public class Move : MonoBehaviour
     [SerializeField] float maxSpeed = 8.3f; // 최대 속도
     [SerializeField] float acceleration = 7.0f; // 가속도
 
+    Animator ani;   
+
     private CharacterController characterController;
     private Camera playerCamera;
     private float rotationX = 0;
@@ -17,9 +19,12 @@ public class Move : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        ani = GetComponent<Animator>();
         characterController = GetComponent<CharacterController>();
         playerCamera = GetComponentInChildren<Camera>();
         Cursor.lockState = CursorLockMode.Locked; // 마우스 커서를 화면 안에 고정
+
+        velocity = Vector3.zero;
     }
 
     // Update is called once per frame
@@ -44,6 +49,7 @@ public class Move : MonoBehaviour
         // 이동 속도를 서서히 증가시킵니다.
         float targetSpeed = moveDirection.magnitude * maxSpeed;
 
+
         // Shift 키를 누르면 달리기 모드 활성화
         if (Input.GetKeyDown(KeyCode.LeftShift))
         {
@@ -65,12 +71,24 @@ public class Move : MonoBehaviour
         }
         else
         {
+
             maxSpeed = 8.3f; // Shift 키를 떼면 최대 속도를 기본 값으로 돌림
             velocity = Vector3.Lerp(velocity, moveDirection.normalized * targetSpeed, acceleration * Time.deltaTime);
         }
 
         // 최대 속도 제한을 적용
         maxSpeed = Mathf.Clamp(maxSpeed, 0, maxSpeed);
+
+        float currentSpeed = velocity.magnitude;
+        if (currentSpeed > 3.5f)
+        {
+            ani.SetBool("walking", true);
+        }
+        if(currentSpeed < 3.5f)
+        {
+            ani.SetBool("walking", false);
+        }
         characterController.Move(velocity * Time.deltaTime);
+
     }
 }
