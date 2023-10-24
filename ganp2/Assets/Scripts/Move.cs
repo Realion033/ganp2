@@ -8,12 +8,13 @@ public class Move : MonoBehaviour
     [SerializeField] float maxSpeed = 8.3f; // 최대 속도
     [SerializeField] float acceleration = 7.0f; // 가속도
 
-    Animator ani;
+    Animator ani;   
 
     private CharacterController characterController;
     private Camera playerCamera;
     private float rotationX = 0;
     private Vector3 velocity = Vector3.zero; // 현재 속도
+    private bool isSprinting = false; // 현재 달리기 상태 여부
 
     // Start is called before the first frame update
     void Start()
@@ -48,19 +49,46 @@ public class Move : MonoBehaviour
         // 이동 속도를 서서히 증가시킵니다.
         float targetSpeed = moveDirection.magnitude * maxSpeed;
 
-        velocity = Vector3.Lerp(velocity, moveDirection.normalized * targetSpeed, acceleration * Time.deltaTime);
 
-        characterController.Move(velocity * Time.deltaTime);
-
-        // 이동 속도에 따라 애니메이션 상태를 변경합니다.
-        float currentSpeed = velocity.magnitude;
-        if (currentSpeed > 0.1f)
+        // Shift 키를 누르면 달리기 모드 활성화
+        if (Input.GetKeyDown(KeyCode.LeftShift))
         {
-            ani.SetBool("walking", true);
+            isSprinting = true;
+            maxSpeed = 18.0f; // Shift 키를 누르면 최대 속도를 15로 고정
+        }
+        // Shift 키를 뗄 때 달리기 모드 비활성화
+        if (Input.GetKeyUp(KeyCode.LeftShift))
+        {
+            isSprinting = false;
+            maxSpeed = 8.3f; // Shift 키를 뗄 때 최대 속도를 기본 값으로 돌림
+        }
+
+        // 달리기 상태에서만 최대 속도와 가속도 조절
+        if (isSprinting)
+        {
+            targetSpeed = 18.0f; // Shift 키를 누를 때 최대 속도를 15로 고정
+            velocity = Vector3.Lerp(velocity, moveDirection.normalized * targetSpeed, acceleration * Time.deltaTime);
         }
         else
         {
+
+            maxSpeed = 8.3f; // Shift 키를 떼면 최대 속도를 기본 값으로 돌림
+            velocity = Vector3.Lerp(velocity, moveDirection.normalized * targetSpeed, acceleration * Time.deltaTime);
+        }
+
+        // 최대 속도 제한을 적용
+        maxSpeed = Mathf.Clamp(maxSpeed, 0, maxSpeed);
+
+        float currentSpeed = velocity.magnitude;
+        if (currentSpeed > 3.5f)
+        {
+            ani.SetBool("walking", true);
+        }
+        if(currentSpeed < 3.5f)
+        {
             ani.SetBool("walking", false);
         }
+        characterController.Move(velocity * Time.deltaTime);
+
     }
 }
