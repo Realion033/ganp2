@@ -5,16 +5,16 @@ using UnityEngine;
 public class Move : MonoBehaviour
 {
     [SerializeField] float sensitivity = 2.0f;
-    [SerializeField] float maxSpeed = 8.3f; // ÃÖ´ë ¼Óµµ
-    [SerializeField] float acceleration = 7.0f; // °¡¼Óµµ
+    [SerializeField] float maxSpeed = 8.3f; // ìµœëŒ€ ì†ë„
+    [SerializeField] float acceleration = 7.0f; // ê°€ì†ë„
 
     Animator ani;   
 
     private CharacterController characterController;
     private Camera playerCamera;
     private float rotationX = 0;
-    private Vector3 velocity = Vector3.zero; // ÇöÀç ¼Óµµ
-    private bool isSprinting = false; // ÇöÀç ´Ş¸®±â »óÅÂ ¿©ºÎ
+    private Vector3 velocity = Vector3.zero; // í˜„ì¬ ì†ë„
+    private bool isSprinting = false; // í˜„ì¬ ë‹¬ë¦¬ê¸° ìƒíƒœ ì—¬ë¶€
 
     // Start is called before the first frame update
     void Start()
@@ -22,7 +22,7 @@ public class Move : MonoBehaviour
         ani = GetComponent<Animator>();
         characterController = GetComponent<CharacterController>();
         playerCamera = GetComponentInChildren<Camera>();
-        Cursor.lockState = CursorLockMode.Locked; // ¸¶¿ì½º Ä¿¼­¸¦ È­¸é ¾È¿¡ °íÁ¤
+        Cursor.lockState = CursorLockMode.Locked; // ë§ˆìš°ìŠ¤ ì»¤ì„œë¥¼ í™”ë©´ ì•ˆì— ê³ ì •
 
         velocity = Vector3.zero;
     }
@@ -30,53 +30,53 @@ public class Move : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // ¸¶¿ì½º ÀÔ·ÂÀ¸·Î Ä«¸Ş¶ó È¸ÀüÀ» Ã³¸®ÇÕ´Ï´Ù.
+        // ë§ˆìš°ìŠ¤ ì…ë ¥ìœ¼ë¡œ ì¹´ë©”ë¼ íšŒì „ì„ ì²˜ë¦¬í•©ë‹ˆë‹¤.
         float mouseX = Input.GetAxis("Mouse X") * sensitivity;
         float mouseY = Input.GetAxis("Mouse Y") * sensitivity;
 
         rotationX -= mouseY;
-        rotationX = Mathf.Clamp(rotationX, -90, 90); // »óÇÏ °¢µµ Á¦ÇÑ
+        rotationX = Mathf.Clamp(rotationX, -90, 90); // ìƒí•˜ ê°ë„ ì œí•œ
 
         playerCamera.transform.localRotation = Quaternion.Euler(rotationX, 0, 0);
         transform.rotation *= Quaternion.Euler(0, mouseX, 0);
 
-        // ÀÌµ¿ ÀÔ·Â Ã³¸®
+        // ì´ë™ ì…ë ¥ ì²˜ë¦¬
         float moveX = Input.GetAxisRaw("Horizontal");
         float moveZ = Input.GetAxisRaw("Vertical");
 
         Vector3 moveDirection = transform.TransformDirection(new Vector3(moveX, 0, moveZ));
 
-        // ÀÌµ¿ ¼Óµµ¸¦ ¼­¼­È÷ Áõ°¡½ÃÅµ´Ï´Ù.
+        // ì´ë™ ì†ë„ë¥¼ ì„œì„œíˆ ì¦ê°€ì‹œí‚µë‹ˆë‹¤.
         float targetSpeed = moveDirection.magnitude * maxSpeed;
 
 
-        // Shift Å°¸¦ ´©¸£¸é ´Ş¸®±â ¸ğµå È°¼ºÈ­
+        // Shift í‚¤ë¥¼ ëˆ„ë¥´ë©´ ë‹¬ë¦¬ê¸° ëª¨ë“œ í™œì„±í™”
         if (Input.GetKeyDown(KeyCode.LeftShift))
         {
             isSprinting = true;
-            maxSpeed = 18.0f; // Shift Å°¸¦ ´©¸£¸é ÃÖ´ë ¼Óµµ¸¦ 15·Î °íÁ¤
+            maxSpeed = 18.0f; // Shift í‚¤ë¥¼ ëˆ„ë¥´ë©´ ìµœëŒ€ ì†ë„ë¥¼ 15ë¡œ ê³ ì •
         }
-        // Shift Å°¸¦ ¶¿ ¶§ ´Ş¸®±â ¸ğµå ºñÈ°¼ºÈ­
+        // Shift í‚¤ë¥¼ ë—„ ë•Œ ë‹¬ë¦¬ê¸° ëª¨ë“œ ë¹„í™œì„±í™”
         if (Input.GetKeyUp(KeyCode.LeftShift))
         {
             isSprinting = false;
-            maxSpeed = 8.3f; // Shift Å°¸¦ ¶¿ ¶§ ÃÖ´ë ¼Óµµ¸¦ ±âº» °ªÀ¸·Î µ¹¸²
+            maxSpeed = 8.3f; // Shift í‚¤ë¥¼ ë—„ ë•Œ ìµœëŒ€ ì†ë„ë¥¼ ê¸°ë³¸ ê°’ìœ¼ë¡œ ëŒë¦¼
         }
 
-        // ´Ş¸®±â »óÅÂ¿¡¼­¸¸ ÃÖ´ë ¼Óµµ¿Í °¡¼Óµµ Á¶Àı
+        // ë‹¬ë¦¬ê¸° ìƒíƒœì—ì„œë§Œ ìµœëŒ€ ì†ë„ì™€ ê°€ì†ë„ ì¡°ì ˆ
         if (isSprinting)
         {
-            targetSpeed = 18.0f; // Shift Å°¸¦ ´©¸¦ ¶§ ÃÖ´ë ¼Óµµ¸¦ 15·Î °íÁ¤
+            targetSpeed = 18.0f; // Shift í‚¤ë¥¼ ëˆ„ë¥¼ ë•Œ ìµœëŒ€ ì†ë„ë¥¼ 15ë¡œ ê³ ì •
             velocity = Vector3.Lerp(velocity, moveDirection.normalized * targetSpeed, acceleration * Time.deltaTime);
         }
         else
         {
 
-            maxSpeed = 8.3f; // Shift Å°¸¦ ¶¼¸é ÃÖ´ë ¼Óµµ¸¦ ±âº» °ªÀ¸·Î µ¹¸²
+            maxSpeed = 8.3f; // Shift í‚¤ë¥¼ ë–¼ë©´ ìµœëŒ€ ì†ë„ë¥¼ ê¸°ë³¸ ê°’ìœ¼ë¡œ ëŒë¦¼
             velocity = Vector3.Lerp(velocity, moveDirection.normalized * targetSpeed, acceleration * Time.deltaTime);
         }
 
-        // ÃÖ´ë ¼Óµµ Á¦ÇÑÀ» Àû¿ë
+        // ìµœëŒ€ ì†ë„ ì œí•œì„ ì ìš©
         maxSpeed = Mathf.Clamp(maxSpeed, 0, maxSpeed);
 
         float currentSpeed = velocity.magnitude;
