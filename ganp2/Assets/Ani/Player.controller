@@ -1,8 +1,11 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
 <<<<<<< HEAD
+<<<<<<< HEAD
 --- !u!1101 &-3512064927857991451
 =======
+=======
+>>>>>>> parent of d11eb85 (글로벌 볼륨추가)
 --- !u!1101 &-2757827077994330337
 >>>>>>> parent of d11eb85 (글로벌 볼륨추가)
 AnimatorStateTransition:
@@ -72,6 +75,7 @@ AnimatorController:
     m_DefaultBool: 0
     m_Controller: {fileID: 0}
 <<<<<<< HEAD
+<<<<<<< HEAD
   - m_Name: aiming
     m_Type: 4
     m_DefaultFloat: 0
@@ -84,6 +88,8 @@ AnimatorController:
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 0}
+=======
+>>>>>>> parent of d11eb85 (글로벌 볼륨추가)
 =======
 >>>>>>> parent of d11eb85 (글로벌 볼륨추가)
   m_AnimatorLayers:
@@ -164,6 +170,7 @@ AnimatorStateMachine:
   - serializedVersion: 1
     m_State: {fileID: 7210123721186762983}
 <<<<<<< HEAD
+<<<<<<< HEAD
     m_Position: {x: 160, y: 240, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -1789458502964351364}
@@ -171,6 +178,9 @@ AnimatorStateMachine:
   - serializedVersion: 1
     m_State: {fileID: 9170225435732106127}
     m_Position: {x: 660, y: 60, z: 0}
+=======
+    m_Position: {x: 270, y: 230, z: 0}
+>>>>>>> parent of d11eb85 (글로벌 볼륨추가)
 =======
     m_Position: {x: 270, y: 230, z: 0}
 >>>>>>> parent of d11eb85 (글로벌 볼륨추가)
